@@ -2,8 +2,8 @@ public class TrainTrackDriver {
     // Note. You can assuming that trains approaching the track will
     // adhere to normal protocol.
 
-    static final int NUM_OF_A_TRAINS = 10;
-    static final int NUM_OF_B_TRAINS = 10;
+    static final int NUM_OF_A_TRAINS = 20;
+    static final int NUM_OF_B_TRAINS = 20;
     static TrainTrack theTrainTrack;
 
     public static void main(String[] args) {

@@ -8,9 +8,7 @@ public class TrainTrack {
     // reference to train activity record
     Activity theTrainActivity;
 
-    // counting semaphore to limit number of trains on track
-    MageeSemaphore aCountSem;
-    MageeSemaphore bCountSem;
+
 
     /* Constructor for TrainTrack */
     public TrainTrack() {
@@ -20,14 +18,10 @@ public class TrainTrack {
         for (int i = 0; i < 22; i++) {
             slotSem[i] = new MageeSemaphore(1);
         }
-        // create  semaphores for limiting number of trains on track
-        aCountSem = new MageeSemaphore(4);
-        bCountSem = new MageeSemaphore(4);
     }  // constructor
 
     public void trainA_MoveOnToTrack(String trainName) {
         CDS.idleQuietly((int) (Math.random() * 100));
-        aCountSem.P(); // limit  number of trains on track to avoid deadlock
         // record the train activity
         slotSem[0].P();// wait for slot 0 to be free
         slots[0] = "[" + trainName + "]"; // move train type A on to slot zero
@@ -36,7 +30,6 @@ public class TrainTrack {
 
     public void trainB_MoveOnToTrack(String trainName) {
         // record the train activity
-        bCountSem.P();  // limit  number of trains on track to avoid deadlock
         CDS.idleQuietly((int) (Math.random() * 100));
         slotSem[12].P();// wait for slot 12 to be free
         slots[12] = "[" + trainName + "]"; // move train type B on to slot 12
@@ -133,7 +126,6 @@ public class TrainTrack {
         slots[11] = "[..]"; // move train type A off slot 11
         slotSem[11].V();// signal slot 11 to be free
         CDS.idleQuietly((int) (Math.random() * 10));
-        aCountSem.V(); // signal space for another A train
     }// end trainA_movedOffTrack
 
     public void trainB_MoveOffTrack(String trainName) {
@@ -143,6 +135,5 @@ public class TrainTrack {
         slots[21] = "[..]"; // move train type A off slot 21
         slotSem[21].V();// signal slot 21 to be free
         CDS.idleQuietly((int) (Math.random() * 10));
-        bCountSem.V(); // signal space for another B train
     }// end trainB_movedOffTrack
 }
