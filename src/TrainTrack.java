@@ -90,28 +90,28 @@ public class TrainTrack {
         int currentPosition = 12;
         do {
             if(currentPosition == 15){ //check position before junction to see if slot ahead of junction is also free to avoid stopping on junction
-                slotSem[7].P();
-                slotSem[16].P();
-                slots[7] = slots[15];
-                slots[15] = "[..]";
-                theTrainActivity.addMovingThroughJunction(7);
-                slots[16] = slots[7];
-                slots[7] = "[..]";
-                slotSem[7].V();
-                slotSem[15].V();
-                theTrainActivity.addMovedTo(16);
+                slotSem[7].P(); //wait until junction 7 is free
+                slotSem[16].P(); //wait until slot ahead of junction, slot 16, is free
+                slots[7] = slots[15]; // move into junction
+                slots[15] = "[..]"; // clear slot 15
+                theTrainActivity.addMovingThroughJunction(7); //record train moving across junction
+                slots[16] = slots[7]; // move into slot 16
+                slots[7] = "[..]"; // clear slot 7
+                slotSem[7].V(); // signal junction 7 that you are leaving
+                slotSem[15].V(); // signal slot 15 that you are leaving
+                theTrainActivity.addMovedTo(16); //record that train has moved to slot 16
                 currentPosition++;
             } else if(currentPosition == 17){//check position before junction to see if slot ahead of junction is also free to avoid stopping on junction
-                slotSem[4].P();
-                slotSem[18].P();
-                slots[4] = slots[17];
-                slots[17] = "[..]";
-                theTrainActivity.addMovingThroughJunction(4);
-                slots[18] = slots[4];
-                slots[4] = "[..]";
-                slotSem[4].V();
-                slotSem[17].V();
-                theTrainActivity.addMovedTo(18);
+                slotSem[4].P(); //wait until junction 4 is free
+                slotSem[18].P(); //wait until slot ahead of junction, slot 18, is free
+                slots[4] = slots[17]; //move into junction 4
+                slots[17] = "[..]"; // clear slot 17
+                theTrainActivity.addMovingThroughJunction(4); // record train moving across junction
+                slots[18] = slots[4]; // move into slot 18
+                slots[4] = "[..]"; //clear junction 4
+                slotSem[4].V(); //signal that you are leaving junction 4
+                slotSem[17].V(); //signal you are leaving slot 17
+                theTrainActivity.addMovedTo(18); // record that train has moved into slot 18
                 currentPosition++;
             } else{
                 /* wait until the position ahead is empty and then move into it*/
